@@ -1,12 +1,27 @@
-import React from "react";
+import personServer from "./services/phoneNumber";
+import React, { useState } from "react";
 
-const PersonForm = ({
-  newName,
-  newNumber,
-  handleNameSubmit,
-  handleNameChange,
-  handleNumberChange,
-}) => {
+const PersonForm = ({ handleUpdata }) => {
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  const handleNameChange = (event) => {
+    setNewName(event.target.value);
+  };
+
+  const handleNameSubmit = (event) => {
+    event.preventDefault();
+    personServer.updata({ name: newName, number: newNumber }).then((res) => {
+      if (res.status === 201) {
+        handleUpdata();
+      }
+    });
+    setNewName("");
+    setNewNumber("");
+  };
+
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value);
+  };
   return (
     <div>
       <form onSubmit={handleNameSubmit}>
